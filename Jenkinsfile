@@ -1,31 +1,28 @@
 pipeline {
     agent any
-    environment {
-        PASSWORD = 'SuperSecret'
-    }
 
     stages {
-        stage('Hello') {
+        stage('Build') {
             steps {
                 echo 'Hello World'
+                sh "sleep 30"
             }
         }
-        stage('ls') {
+        stage('Test') {
             steps {
+                sh "pwd"
                 sh "ls -alh"
+                sh "sleep 10"
             }
         }
-        stage('create script') {
+        stage('Deploy') {
             steps {
-                sh "echo 'echo hello from jenkins' | tee coolScript.sh" 
-                sh "sh coolScript.sh"
+                sh "touch file.txt"
+                sh "mkdir foo"
+                sh "mv file.txt foo"
+                sh "ls -alh foo"
+                sh "sleep 10"
             }
-        }
-    }
-    post {
-        always {
-            archiveArtifacts 'coolScript.sh'
-            cleanWs()
         }
     }
 }
